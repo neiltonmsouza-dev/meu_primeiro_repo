@@ -1,0 +1,22 @@
+name: Meu Primeiro CI
+
+# Define que a pipeline vai rodar sempre que houver um push na branch main
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  executar-testes:
+    # Usa um servidor virtual com Ubuntu fornecido gratuitamente pelo GitHub
+    runs-on: ubuntu-latest
+
+    steps:
+    # Passo 1: Baixa o código do repositório para o servidor da nuvem
+    - name: Copiar código para a máquina virtual
+      uses: actions/checkout@v3
+
+    # Passo 2: Executa um comando simples de Linux na nuvem
+    - name: Rodar comando de teste
+      run: |
+        echo "O pipeline rodou com sucesso na nuvem!"
+        python3 --version
