@@ -1,4 +1,4 @@
-name: Teste de Qualidade do Código
+name: Pipeline Completa de CI
 
 on:
   push:
@@ -7,18 +7,23 @@ on:
 jobs:
   validar-codigo:
     runs-on: ubuntu-latest
-
     steps:
     - name: Baixar o código
       uses: actions/checkout@v3
-
     - name: Configurar o ambiente Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
-
     - name: Instalar o verificador (Flake8)
       run: pip install flake8
-
     - name: Rodar a inspeção no arquivo app.py
-      run: flake8 app.pyname: Teste de Qualidade do Código
+      run: flake8 app.py
+
+  build-docker:
+    needs: validar-codigo  # Essa linha é a grande mágica de hoje!
+    runs-on: ubuntu-latest
+    steps:
+    - name: Baixar o código
+      uses: actions/checkout@v3
+    - name: Testar a criação da Imagem Docker
+      run: docker build -t meu-app-teste .
