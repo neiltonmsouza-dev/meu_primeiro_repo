@@ -1,22 +1,24 @@
-name: Meu Primeiro CI
+name: Teste de Qualidade do Código
 
-# Define que a pipeline vai rodar sempre que houver um push na branch main
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  executar-testes:
-    # Usa um servidor virtual com Ubuntu fornecido gratuitamente pelo GitHub
+  validar-codigo:
     runs-on: ubuntu-latest
 
     steps:
-    # Passo 1: Baixa o código do repositório para o servidor da nuvem
-    - name: Copiar código para a máquina virtual
+    - name: Baixar o código
       uses: actions/checkout@v3
 
-    # Passo 2: Executa um comando simples de Linux na nuvem
-    - name: Rodar comando de teste
-      run: |
-        echo "O pipeline rodou com sucesso na nuvem!"
-        python3 --version
+    - name: Configurar o ambiente Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Instalar o verificador (Flake8)
+      run: pip install flake8
+
+    - name: Rodar a inspeção no arquivo app.py
+      run: flake8 app.pyname: Teste de Qualidade do Código
